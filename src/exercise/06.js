@@ -1,7 +1,7 @@
 // Basic Forms
 // http://localhost:3000/isolated/exercise/06.js
 
-import * as React from 'react'
+import * as React from 'react';
 
 function UsernameForm({onSubmitUsername}) {
   // 🐨 add a submit event handler here (`handleSubmit`).
@@ -18,20 +18,54 @@ function UsernameForm({onSubmitUsername}) {
 
   // 🐨 make sure to associate the label to the input.
   // to do so, set the value of 'htmlFor' prop of the label to the id of input
+
+  const inputRef = React.useRef();
+  // const [error, setError] = React.useState(null);
+  const [username, setUsername] = React.useState('');
+
+  // const isError = !!error;
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    // const value = event.target.elements[0].value;
+    const inputRefValue = inputRef.current.value;
+    onSubmitUsername(inputRefValue);
+  };
+
+  // const handleChange = event => {
+  //   const value = event.target.value;
+  //   const isValid = value === value.toLowerCase();
+
+  //   setError(isValid ? null : 'Username must be lower case');
+  // };
+
+  const handleChange = event => {
+    const value = event.target.value;
+    setUsername(value.toLowerCase());
+  };
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <div>
-        <label>Username:</label>
-        <input type="text" />
+        <label htmlFor="username">Username:</label>
+        <input
+          ref={inputRef}
+          id="username"
+          type="text"
+          value={username}
+          onChange={handleChange}
+        />
+        {/* {isError ? <div role="alert">{error}</div> : null} */}
       </div>
+      {/* <button type="submit" disabled={isError}> */}
       <button type="submit">Submit</button>
     </form>
-  )
+  );
 }
 
 function App() {
-  const onSubmitUsername = username => alert(`You entered: ${username}`)
-  return <UsernameForm onSubmitUsername={onSubmitUsername} />
+  const onSubmitUsername = username => alert(`You entered: ${username}`);
+  return <UsernameForm onSubmitUsername={onSubmitUsername} />;
 }
 
-export default App
+export default App;
